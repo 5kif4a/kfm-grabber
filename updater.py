@@ -45,7 +45,7 @@ class Updater:
         return dataframes
 
     @staticmethod
-    def prepare_df(dataframes): # удаляем столбец num и добавляем столбец 'status' - active or exclude
+    def prepare_df(dataframes):  # удаляем столбец num и добавляем столбец 'status' - active or exclude
         for i in range(len(dataframes)):
             dataframes[i] = dataframes[i].drop(columns=['num'], axis=1)
             if i % 2 == 0:  # нечетные датафрэйма - действующие, четные - исключенные
@@ -75,10 +75,5 @@ class Updater:
         # собираем вместе лица и организации
         self.concat_df(dataframes)
         # добавляем в базу
-        self.put_to_db(dataframe=self.persons_df, connection=con, tablemame='Persons', chunksize=3000)
-        self.put_to_db(dataframe=self.orgs_df, connection=con, tablemame='Organizations', chunksize=3000)
-
-
-upd = Updater(links)
-upd.run()
-
+        self.put_to_db(dataframe=self.persons_df, connection=con, tablemame='persons', chunksize=3000)
+        self.put_to_db(dataframe=self.orgs_df, connection=con, tablemame='organizations', chunksize=3000)

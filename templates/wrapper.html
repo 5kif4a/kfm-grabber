@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        KFM Grabber Admin Panel
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand navbar-light bg-light sticky-top">
+  <a class="navbar-brand" href="/">Главная</a>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/persons">Список лиц</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/organizations">Список организации</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Логи</a>
+      </li>
+    </ul>
+      <button class="btn btn-outline-warning my-2 my-sm-0" onclick="update()">Обновить базу</button>
+  </div>
+</nav>
+{% block content %}
+{% endblock %}
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

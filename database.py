@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 from models import Base
-
 
 # read URL for connection to database from config file
 with open('db.config', 'r', encoding='utf8') as f:
@@ -11,9 +11,5 @@ with open('db.config', 'r', encoding='utf8') as f:
 url = 'postgresql://{}:{}@{}:{}/{}'.format(*args)
 con = create_engine(url, client_encoding='utf8', echo=False)
 
-
-Base.metadata.create_all(con)  # создать таблицы
-# Base.metadata.drop_all(con)  # удалить таблицы
-
-
-
+Session = sessionmaker(bind=con)
+session = Session()
