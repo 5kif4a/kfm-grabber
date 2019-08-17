@@ -110,3 +110,6 @@ venv.bak/
 
 # Database settings
 db.config
+
+# Logs
+console.log
