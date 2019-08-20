@@ -108,8 +108,8 @@ venv.bak/
 # IDEA config files
 .idea/
 
-# Database settings
-db.config
+# config file
+config
 
 # Logs
 console.log

@@ -5,15 +5,36 @@
      <form class="m-1">
   <div class="form-group row">
     <div class="col text-center">
-      <button class="btn btn-outline-primary m-1"><i class="far fa-plus-square"></i> Добавить запись</button>
+      <button type="button" onclick="location.href='{{url_for('add', table=t)}}'" class="btn btn-outline-primary m-1"><i class="far fa-plus-square"></i> Добавить</button>
     </div>
       <div class="col text-center">
-      <button class="btn btn-outline-danger m-1"><i class="far fa-trash-alt"></i> Удалить</button>
+      <button type="button" class="btn btn-outline-secondary m-1"><i class="fas fa-file-csv"></i> Сохранить как CSV</button>
+    </div>
+      <div class="col text-center">
+      <button type="button" class="btn btn-outline-danger m-1" onclick="delete_rows()"><i class="far fa-trash-alt"></i> Удалить</button>
     </div>
   </div>
 </form>
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        {% if category == 'insert' %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {% elif category == 'delete' %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {% endif %}
+            {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+             </button>
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+     <div class="alert alert-dark text-center">{{ pagination.info }}</div>
+     {{ pagination.links }}
 <div class="table-responsive">
-<table class="table table-bordered table-hover">
+<table class="table table-bordered table-hover" id="table">
         <thead class="thead-dark">
         <tr>
             <th>
@@ -37,13 +58,7 @@
             {% endfor %}
         </tbody>
     </table>
-    <nav aria-label="Page navigation example">
-  <ul class="pagination justify-content-center">
-      {% for page_num in range(last_page) %}
-    <li class="page-item"><a class="page-link" href="{{ url_for('page', table=t, p=page_num+1) }}">{{page_num + 1}}</a></li>
-      {% endfor %}
-  </ul>
-</nav>
 </div>
+     {{ pagination.links }}
  </div>
 {% endblock %}

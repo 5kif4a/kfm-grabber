@@ -3,6 +3,7 @@ import xml.etree.cElementTree as ET
 from io import StringIO
 import pandas as pd
 from database import con
+from datetime import datetime
 
 # ссылки на XML файлы
 links = ('https://kfm.gov.kz/blacklist/export/active/xml', 'https://kfm.gov.kz/blacklist/export/excluded/xml')
@@ -17,6 +18,10 @@ class Updater:
         # для датафрэймов
         self.persons_df = None
         self.orgs_df = None
+        # последняя дата обновления бд
+        with open('last_update.txt', 'r', encoding='utf8') as f:
+            t = f.readline()
+        self.last_update = t if len(t) > 0 else 'Неизвестно'  # тупой метод (:
 
     @staticmethod
     def download(link):  # скачивает файл по ссылке
@@ -65,6 +70,13 @@ class Updater:
     def put_to_db(dataframe, connection, tablemame, chunksize):
         dataframe.to_sql(con=connection, name=tablemame, if_exists='replace', chunksize=chunksize)
 
+    def update_status(self):
+        with open('last_update.txt', 'w') as f:
+            f.write(datetime.now().strftime("%d-%m-%Y %H:%M:%S"))
+        with open('last_update.txt', 'r', encoding='utf8') as f:
+            t = f.readline()
+        self.last_update = t
+
     def run(self):
         # список с XML файлами
         parsed_xml_files = [self.download(link) for link in self.links]
@@ -77,3 +89,6 @@ class Updater:
         # добавляем в базу
         self.put_to_db(dataframe=self.persons_df, connection=con, tablemame='persons', chunksize=3000)
         self.put_to_db(dataframe=self.orgs_df, connection=con, tablemame='organizations', chunksize=3000)
+        # последняя дата обновления бд
+        self.update_status()
+

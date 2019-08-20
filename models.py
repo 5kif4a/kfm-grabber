@@ -7,7 +7,7 @@ Base = declarative_base()  # Декларативный стиль
 class Person(Base):
     __tablename__ = 'persons'
 
-    index = Column(BIGINT, primary_key=True, index=True)
+    index = Column(BIGINT, primary_key=True)
     lname = Column(Text)
     fname = Column(Text)
     mname = Column(Text)
@@ -16,6 +16,17 @@ class Person(Base):
     note = Column(Text)
     correction = Column(Text)
     status = Column(Text)
+
+    def __init__(self, index, lname, fname, mname, birthdate, iin, note, correction, status):
+        self.index = index
+        self.lname = lname
+        self.fname = fname
+        self.mname = mname
+        self.birthdate = birthdate
+        self.iin = iin
+        self.note = note
+        self.correction = correction
+        self.status = status
 
     def __repr__(self):
         return '<Person({},{},{},{},{},{},{},{})>'.format(self.lname, self.fname, self.mname,
@@ -26,7 +37,7 @@ class Person(Base):
 class Organization(Base):
     __tablename__ = 'organizations'
 
-    index = Column(BIGINT, primary_key=True, index=True)
+    index = Column(BIGINT, primary_key=True)
     org_name = Column(Text)
     org_name_en = Column(Text)
     note = Column(Text)
