@@ -123,4 +123,42 @@ function delete_rows() { // удалить из базы данных строк
         alert('Вы не выбрали строки для удаления');
     }
 }
-
+function get_data_from_form() {
+    var elements = document.getElementById("edit").elements;
+    var obj ={};
+    for(var i = 0 ; i < elements.length ; i++){
+        var item = elements.item(i);
+        obj[item.name] = item.value;
+    }
+   return obj;
+}
+function put() { // обновить строку
+    let data = get_data_from_form();
+    delete data[''];
+    let t = window.location.pathname.split('/')[1];
+    let idx = window.location.pathname.split('/')[3];
+    data['index'] = parseInt(idx, 10);
+    fetch('/'+ t +'/put', {
+    method: "PUT",
+    credentials: "include",
+    body: JSON.stringify(data),
+    cache: "no-cache",
+    redirect: 'follow',
+    headers: new Headers({
+      "content-type": "application/json"
+    }),
+  })
+    .then(function(response) {
+    if (response.status !== 200) {
+      console.log(`Looks like there was a problem. Status code: ${response.status}`);
+      return;
+    }
+    response.json().then(function(data) {
+      console.log(data);
+      window.location.href = '/' + t + '/page/1';
+    });
+    })
+    .catch(function(error) {
+    console.log("Fetch error: " + error);
+});
+}

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error occured</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+</head>
+<body>
+<div class="page-wrap d-flex flex-row align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 text-center">
+                <span class="display-1 d-block">500</span>
+                <div class="mb-4 lead">Interval Server Error</div>
+                <img src="{{ url_for('static', filename='images/500.png') }}" class="img-fluid w-50 h-50">
+                <div>
+                    <a href="/" class="btn btn-link">Return to home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

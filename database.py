@@ -1,17 +1,17 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Base
+from settings import *
 
-# read URL for connection to database from config file
-with open('config', 'r', encoding='utf8') as f:
-    args = [row for row in f.read().split('\n')]
-
+args = (DATABASE_USER, DATABASE_PASSWORD, HOST, PORT, DATABASE_NAME)
 
 url = 'postgresql://{}:{}@{}:{}/{}'.format(*args)
 con = create_engine(url, client_encoding='utf8', echo=False)
 
 Session = sessionmaker(bind=con, autocommit=True)  # autocommit - опасно
 session = Session()
+
+Base.metadata.create_all(con)
 
 
 def get_model_by_tablename(tablename):  # получить модель по имени таблицы

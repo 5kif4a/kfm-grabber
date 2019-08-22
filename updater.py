@@ -4,6 +4,7 @@ from io import StringIO
 import pandas as pd
 from database import con
 from datetime import datetime
+from logger import logger
 
 # ссылки на XML файлы
 links = ('https://kfm.gov.kz/blacklist/export/active/xml', 'https://kfm.gov.kz/blacklist/export/excluded/xml')
@@ -18,6 +19,7 @@ class Updater:
         # для датафрэймов
         self.persons_df = None
         self.orgs_df = None
+        self.history = None
         # последняя дата обновления бд
         with open('last_update.txt', 'r', encoding='utf8') as f:
             t = f.readline()
@@ -62,13 +64,27 @@ class Updater:
         # датафрэйм со всеми лицами
         self.persons_df = pd.concat([dataframes[i] for i in range(len(dataframes)) if i in (0, 1)],
                                     sort=False, ignore_index=True)
+
         # датафрэйм со всеми орг-ми
         self.orgs_df = pd.concat([dataframes[i] for i in range(len(dataframes)) if i in (2, 3)],
                                  sort=False, ignore_index=True)
+        # индексирование с 1
+        self.persons_df.index += 1
+        self.orgs_df.index += 1
+
+    def make_history(self):  # при обновлении бд, создает датафрэйм с историей
+        history = pd.DataFrame(columns=['table', 'obj_id', 'note', 'date'])
+        for i in range(len(self.persons_df)):
+            history.loc[i] = ['persons', i + 1, 'Database update', self.last_update]
+        for i in range(len(self.orgs_df)):
+            history.loc[len(self.persons_df) + i] = ['organizations', i + 1, 'Database update', self.last_update]
+        self.history = history
 
     @staticmethod
-    def put_to_db(dataframe, connection, tablemame, chunksize):
-        dataframe.to_sql(con=connection, name=tablemame, if_exists='replace', chunksize=chunksize)
+    def put_to_db(dataframe, connection, tablemame, chunksize, if_exists):
+        dataframe.to_sql(con=connection, name=tablemame, if_exists=if_exists, chunksize=chunksize)
+        logger.info('Table "{}" is fully updated'.format(tablemame))
+
 
     def update_status(self):
         with open('last_update.txt', 'w') as f:
@@ -86,9 +102,16 @@ class Updater:
         self.prepare_df(dataframes)
         # собираем вместе лица и организации
         self.concat_df(dataframes)
-        # добавляем в базу
-        self.put_to_db(dataframe=self.persons_df, connection=con, tablemame='persons', chunksize=3000)
-        self.put_to_db(dataframe=self.orgs_df, connection=con, tablemame='organizations', chunksize=3000)
+        # добавляем в лица и организацю базу
+        self.put_to_db(dataframe=self.persons_df, connection=con, tablemame='persons',
+                       if_exists='replace', chunksize=3000)
+        self.put_to_db(dataframe=self.orgs_df, connection=con, tablemame='organizations', if_exists='replace',
+                       chunksize=3000)
         # последняя дата обновления бд
         self.update_status()
+        # история изменений
+        self.make_history()
+        # добавляем историю в базу
+        self.put_to_db(self.history, connection=con, tablemame='history', if_exists='replace', chunksize=3000)
+        logger.info('Database updated')
 

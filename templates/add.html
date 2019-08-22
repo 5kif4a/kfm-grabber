@@ -1,0 +1,35 @@
+{% extends 'wrapper.html' %}
+{% block content %}
+<div class="container">
+     <form class="m-1">
+  <div class="form-group row">
+    <div class="col text-center">
+      <button type="button" onclick="addNewRow()" class="btn btn-outline-primary m-1"><i class="far fa-plus-square"></i> Добавить строку</button>
+    </div>
+      <div class="col text-center">
+      <button type="button" class="btn btn-outline-success m-1" onclick="send_data()"><i class="far fa-paper-plane"></i> Отправить</button>
+    </div>
+  </div>
+</form>
+<div class="table-responsive">
+<table class="table table-bordered" id="table">
+        <thead class="thead-dark">
+        <tr>
+            {% for c in columns %}
+                <th>{{c}}</th>
+            {% endfor %}
+            <th>remove</th>
+        </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    {% for c in columns %}
+                        <td contenteditable="true"></td>
+                    {% endfor %}
+                    <td><button class="btn btn-outline-danger" onclick="deleteRow(this)"><i class="fas fa-backspace"></i></button></td>
+                </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+{% endblock %}

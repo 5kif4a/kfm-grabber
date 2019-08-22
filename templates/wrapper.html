@@ -21,7 +21,7 @@
         <a class="nav-link" href="/organizations/page/1">Список организации</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Логи</a>
+        <a class="nav-link" href="/logs">Логи</a>
       </li>
     </ul>
       <button class="btn btn-outline-secondary mr-1" type="button" data-toggle="collapse" data-target="#toggle"><i class="fas fa-search"></i></button>
@@ -31,6 +31,13 @@
 <div class="container collapse" id="toggle">
     <form class="p-2">
      <div class="form-group row">
+    <label for="category" class="col-sm-1 col-form-label">Категория</label>
+    <div class="col-sm-2">
+    <select class="form-control" class="form-control-plaintext" id="category">
+        <option>Лица</option>
+        <option>Организации</option>
+    </select>
+    </div>
     <label for="filter" class="col-sm-1 col-form-label">Статус</label>
     <div class="col-sm-2">
     <select class="form-control" class="form-control-plaintext" id="filter">
@@ -39,18 +46,11 @@
         <option>excluded</option>
     </select>
     </div>
-         <label for="sort" class="col-sm-1 col-form-label">Сортировка</label>
-         <div class="col-sm-2">
-    <select class="form-control" class="form-control-plaintext" id="sort">
-        <option>По возрастанию</option>
-        <option>По убыванию</option>
-    </select>
-    </div>
   </div>
   <div class="input-group mb-3">
-  <input type="text" class="form-control" placeholder="Поиск в базе" aria-label="Recipient's username" aria-describedby="button-addon2">
+  <input type="text" class="form-control" placeholder="Поиск в базе" required>
   <div class="input-group-append">
-    <button class="btn btn-outline-primary" type="button" id="button-addon2">Искать</button>
+    <button class="btn btn-outline-primary" type="submit" id="button-addon2">Искать</button>
   </div>
 </div>
 </form>

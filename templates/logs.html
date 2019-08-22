@@ -1,0 +1,4 @@
+{% extends 'wrapper.html' %}
+{% block content %}
+{% for row in content %}<p class="m-0">{{loop.index}} - {{ row }}</p>{% endfor %}
+{% endblock %}
