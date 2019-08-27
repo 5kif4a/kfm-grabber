@@ -85,7 +85,6 @@ class Updater:
         dataframe.to_sql(con=connection, name=tablemame, if_exists=if_exists, chunksize=chunksize)
         logger.info('Table "{}" is fully updated'.format(tablemame))
 
-
     def update_status(self):
         with open('last_update.txt', 'w') as f:
             f.write(datetime.now().strftime("%d-%m-%Y %H:%M:%S"))
@@ -114,4 +113,3 @@ class Updater:
         # добавляем историю в базу
         self.put_to_db(self.history, connection=con, tablemame='history', if_exists='replace', chunksize=3000)
         logger.info('Database updated')
-

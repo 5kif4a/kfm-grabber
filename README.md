@@ -3,8 +3,6 @@
 **Требования**\
 Python 3.6+\
 PostgreSQL\
-RabbitMQ - брокер для celery\
-Erlang - если RabbitMQ на Win 64bit\
 Интеграция с Sentry\
 **Установка**
 - Скачать проект
@@ -42,15 +40,8 @@ PORT=5432
 DATABASE_NAME=postgres
 # Sentry integration
 SENTRY_DSN=project_dsn
-# Celery configuration
-CELERY_BROKER_URL=amqp://localhost//
-# Periodic task (hours)
-DELAY=3
-```
-- Запуск очереди задач
-```
-celery -A main.celery beat
-celery -A main.celery worker
+# Update database every (minutes)
+INTERVAL=60
 ```
 - Запуск сервера
 ```
@@ -60,8 +51,8 @@ python -m flask run
 **TODO LIST**
 - [x] Интеграция с sentry
 - [x] Конфигурацию переменными окружения
-- [ ] Очередь задач (Celery)
+- [x] Фоновое обновление базы данных
 - [x] Логирование
+- [x] Поиск в базе данных
+- [ ] Фильтрация
 - [ ] _Детальное_ логирование
-- [ ] Поиск в БД и фильтрация
-

@@ -12,6 +12,15 @@ HOST = os.environ.get("HOST")
 PORT = os.environ.get("PORT")
 DATABASE_NAME = os.environ.get("DATABASE_NAME")
 SENTRY_DSN = os.environ.get("SENTRY_DSN")
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL")
-DELAY = os.environ.get("DELAY")
+INTERVAL = int(os.environ.get('INTERVAL'))
 
+
+class Config(object):  # for APSCHEDULER
+    JOBS = [
+        {
+            'id': 'job1',
+            'func': 'main:update',
+            'trigger': 'interval',
+            'minutes': INTERVAL
+        }
+    ]
