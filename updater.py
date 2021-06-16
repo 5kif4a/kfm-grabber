@@ -1,13 +1,18 @@
-import requests as r
 import xml.etree.cElementTree as ET
-from io import StringIO
-import pandas as pd
-from database import con
 from datetime import datetime
+from io import StringIO
+
+import pandas as pd
+import requests as r
+
+from database import con
 from logger import logger
 
 # ссылки на XML файлы
-links = ('https://kfm.gov.kz/blacklist/export/active/xml', 'https://kfm.gov.kz/blacklist/export/excluded/xml')
+links = (
+    'https://kfm.gov.kz/blacklist/export/active/xml',
+    'https://kfm.gov.kz/blacklist/export/excluded/xml'
+)
 
 
 class Updater:

@@ -10,54 +10,55 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand navbar-light bg-light sticky-top">
-        <a class="navbar-brand" href="/">Главная</a>
-  <div class="collapse navbar-collapse" id="navbarToggleContent" >
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="/persons/page/1">Список лиц</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/organizations/page/1">Список организации</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/logs">Логи</a>
-      </li>
-    </ul>
-      <button class="btn btn-outline-secondary mr-1" type="button" data-toggle="collapse" data-target="#toggle"><i class="fas fa-search"></i></button>
-      <button class="btn btn-outline-warning my-2 my-sm-0" onclick="updateall()">Обновить базу</button>
-  </div>
-    </nav>
+<nav class="navbar navbar-expand navbar-light bg-light sticky-top">
+    <a class="navbar-brand" href="/">Главная</a>
+    <div class="collapse navbar-collapse" id="navbarToggleContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/persons/page/1">Список лиц</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/organizations/page/1">Список организации</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logs">Логи</a>
+            </li>
+        </ul>
+        <button class="btn btn-outline-secondary mr-1" type="button" data-toggle="collapse" data-target="#toggle"><i
+                class="fas fa-search"></i></button>
+        <button class="btn btn-outline-warning my-2 my-sm-0" onclick="updateall()">Обновить базу</button>
+    </div>
+</nav>
 <div class="container collapse" id="toggle">
     <form class="p-2" method="get" action="/search">
-     <div class="form-group row">
-    <label for="category" class="col-sm-1 col-form-label">Категория</label>
-    <div class="col-sm-2">
-    <select class="form-control" class="form-control-plaintext" id="category" name="category">
-        <option>persons</option>
-        <option>organizations</option>
-    </select>
-    </div>
-    <label for="status" class="col-sm-1 col-form-label">Статус</label>
-    <div class="col-sm-2">
-    <select class="form-control" class="form-control-plaintext" id="status" name="status">
-        <option>all</option>
-        <option>active</option>
-        <option>excluded</option>
-    </select>
-    </div>
-  </div>
-  <div class="input-group mb-3">
-  <input type="text" class="form-control" name="q" placeholder="Поиск в базе" required>
-  <div class="input-group-append">
-      <button class="btn btn-outline-primary" type="submit">Искать</button>
-  </div>
-</div>
-</form>
+        <div class="form-group row">
+            <label for="category" class="col-sm-1 col-form-label">Категория</label>
+            <div class="col-sm-2">
+                <select class="form-control" class="form-control-plaintext" id="category" name="category">
+                    <option>persons</option>
+                    <option>organizations</option>
+                </select>
+            </div>
+            <label for="status" class="col-sm-1 col-form-label">Статус</label>
+            <div class="col-sm-2">
+                <select class="form-control" class="form-control-plaintext" id="status" name="status">
+                    <option>all</option>
+                    <option>active</option>
+                    <option>excluded</option>
+                </select>
+            </div>
+        </div>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" name="q" placeholder="Поиск в базе" required>
+            <div class="input-group-append">
+                <button class="btn btn-outline-primary" type="submit">Искать</button>
+            </div>
+        </div>
+    </form>
 </div>
 {% block content %}
 {% endblock %}
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" ></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="{{ url_for('static', filename='script.js') }}"></script>

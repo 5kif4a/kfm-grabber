@@ -1,49 +1,57 @@
 {% extends 'wrapper.html' %}
 {% set t = table %}
 {% block content %}
- <div class="container">
-     <form class="m-1">
-  <div class="form-group row">
-    <div class="col text-center">
-      <button type="button" onclick="location.href='{{url_for('add', table=t)}}'" class="btn btn-outline-primary m-1"><i class="far fa-plus-square"></i> Добавить</button>
-    </div>
-      <div class="col text-center">
-      <button type="button" class="btn btn-outline-danger m-1" onclick="delete_rows()"><i class="far fa-trash-alt"></i> Удалить</button>
-    </div>
-  </div>
-</form>
-     {% if data.count() > 0 %}
-     <div class="alert alert-dark text-center"> Результаты поиска {{pagination.info}} </div>
-      {{pagination.links}}
-<div class="table-responsive">
-<table class="table table-bordered table-hover" id="table">
-        <thead class="thead-dark">
-        <tr>
-            <th>
-                <input type="checkbox"id="selectall" onclick="toggle(this)">
-            </th>
-            {% for c in columns %}
-                <th>{{c}}</th>
-            {% endfor %}
-            <th>edit</th>
-        </tr>
-        </thead>
-        <tbody>
-            {% for row in data %}
-                <tr>
-                    <td><input type="checkbox" name="select" id="{{row.index}}"></td>
-                    {% for c in columns %}
-                        <td>{{row|attr(c)}}</td>
+    <div class="container">
+        <form class="m-1">
+            <div class="form-group row">
+                <div class="col text-center">
+                    <button type="button" onclick="location.href='{{ url_for('add', table=t) }}'"
+                            class="btn btn-outline-primary m-1"><i class="far fa-plus-square"></i> Добавить
+                    </button>
+                </div>
+                <div class="col text-center">
+                    <button type="button" class="btn btn-outline-danger m-1" onclick="delete_rows()"><i
+                            class="far fa-trash-alt"></i> Удалить
+                    </button>
+                </div>
+            </div>
+        </form>
+        {% if data.count() > 0 %}
+            <div class="alert alert-dark text-center"> Результаты поиска {{ pagination.info }} </div>
+            {{ pagination.links }}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="selectall" onclick="toggle(this)">
+                        </th>
+                        {% for c in columns %}
+                            <th>{{ c }}</th>
+                        {% endfor %}
+                        <th>edit</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for row in data %}
+                        <tr>
+                            <td><input type="checkbox" name="select" id="{{ row.index }}"></td>
+                            {% for c in columns %}
+                                <td>{{ row|attr(c) }}</td>
+                            {% endfor %}
+                            <td>
+                                <button class="btn btn-outline-success"
+                                        onclick="location.href='{{ url_for('edit', table=t, idx=row.index) }}'"><i
+                                        class="fas fa-edit"></i></button>
+                            </td>
+                        </tr>
                     {% endfor %}
-                    <td><button class="btn btn-outline-success" onclick="location.href='{{url_for('edit', table=t, idx=row.index)}}'"><i class="fas fa-edit"></i></button></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-      {{pagination.links}}
- </div>
-     {% else %}
-        <div class="alert alert-info text-center">По Вашему запросу ничего не найдено</div>
-     {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            {{ pagination.links }}
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center">По Вашему запросу ничего не найдено</div>
+        {% endif %}
 {% endblock %}

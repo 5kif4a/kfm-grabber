@@ -1,32 +1,35 @@
 {% extends 'wrapper.html' %}
 {% block content %}
-<div class="container">
-    <div class="row">
-    <div class="col-sm mt-1">
-    <h4>Редактирование</h4>
-    <form id="edit">
-        {% for c in columns %}
-        {% if c != 'index' %}
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label">{{c}}</label>
-            <input type="text" required class="form-control col-sm" name="{{c}}" value="{{obj|attr(c)}}">
-        </div>
-        {% endif %}
-        {% endfor %}
-        <button type="button" class="btn btn-outline-primary" onclick="put()"><i class="far fa-save"></i> Сохранить</button>
-    </form>
-    </div>
-    <div class="col-sm mt-1 overflow-auto">
-        <h4>История изменений</h4>
-        {% for row in history %}
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Дата: {{row.date}}</h5>
-                <p class="card-text">{{row.note}}</p>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm mt-1">
+                <h4>Редактирование</h4>
+                <form id="edit">
+                    {% for c in columns %}
+                        {% if c != 'index' %}
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">{{ c }}</label>
+                                <input type="text" required class="form-control col-sm" name="{{ c }}"
+                                       value="{{ obj|attr(c) }}">
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <button type="button" class="btn btn-outline-primary" onclick="put()"><i class="far fa-save"></i>
+                        Сохранить
+                    </button>
+                </form>
+            </div>
+            <div class="col-sm mt-1 overflow-auto">
+                <h4>История изменений</h4>
+                {% for row in history %}
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Дата: {{ row.date }}</h5>
+                            <p class="card-text">{{ row.note }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
     </div>
-  </div>
-</div>
 {% endblock %}

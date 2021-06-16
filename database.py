@@ -1,12 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
 from models import Base
-from settings import *
 
-args = (DATABASE_USER, DATABASE_PASSWORD, HOST, PORT, DATABASE_NAME)
-
-url = 'postgresql://{}:{}@{}:{}/{}'.format(*args)
-con = create_engine(url, client_encoding='utf8', echo=False)
+con = create_engine('sqlite:///db.sqlite3')
 
 Session = sessionmaker(bind=con, autocommit=True)  # autocommit - опасно
 session = Session()

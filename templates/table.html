@@ -1,64 +1,74 @@
 {% extends 'wrapper.html' %}
 {% set t = table %}
 {% block content %}
- <div class="container">
-     <form class="m-1">
-  <div class="form-group row">
-    <div class="col text-center">
-      <button type="button" onclick="location.href='{{url_for('add', table=t)}}'" class="btn btn-outline-primary m-1"><i class="far fa-plus-square"></i> Добавить</button>
-    </div>
-      <div class="col text-center">
-      <button type="button" class="btn btn-outline-secondary m-1"><i class="fas fa-file-csv"></i> Сохранить как CSV</button>
-    </div>
-      <div class="col text-center">
-      <button type="button" class="btn btn-outline-danger m-1" onclick="delete_rows()"><i class="far fa-trash-alt"></i> Удалить</button>
-    </div>
-  </div>
-</form>
-{% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for category, message in messages %}
-        {% if category == 'insert' %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {% elif category == 'delete' %}
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {% endif %}
-            {{message}}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                 <span aria-hidden="true">&times;</span>
-             </button>
-        </div>
-        {% endfor %}
-    {% endif %}
-{% endwith %}
-     <div class="alert alert-dark text-center">{{ pagination.info }}</div>
-     {{ pagination.links }}
-<div class="table-responsive">
-<table class="table table-bordered table-hover" id="table">
-        <thead class="thead-dark">
-        <tr>
-            <th>
-                <input type="checkbox"id="selectall" onclick="toggle(this)">
-            </th>
-            {% for c in columns %}
-                <th>{{c}}</th>
-            {% endfor %}
-            <th>edit</th>
-        </tr>
-        </thead>
-        <tbody>
-            {% for row in data %}
+    <div class="container">
+        <form class="m-1">
+            <div class="form-group row">
+                <div class="col text-center">
+                    <button type="button" onclick="location.href='{{ url_for('add', table=t) }}'"
+                            class="btn btn-outline-primary m-1"><i class="far fa-plus-square"></i> Добавить
+                    </button>
+                </div>
+                <div class="col text-center">
+                    <button type="button" class="btn btn-outline-secondary m-1"><i class="fas fa-file-csv"></i>
+                        Сохранить как CSV
+                    </button>
+                </div>
+                <div class="col text-center">
+                    <button type="button" class="btn btn-outline-danger m-1" onclick="delete_rows()"><i
+                            class="far fa-trash-alt"></i> Удалить
+                    </button>
+                </div>
+            </div>
+        </form>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if category == 'insert' %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {% elif category == 'delete' %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {% endif %}
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <div class="alert alert-dark text-center">{{ pagination.info }}</div>
+        {{ pagination.links }}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" id="table">
+                <thead class="thead-dark">
                 <tr>
-                    <td><input type="checkbox" name="select" id="{{row.index}}"></td>
+                    <th>
+                        <input type="checkbox" id="selectall" onclick="toggle(this)">
+                    </th>
                     {% for c in columns %}
-                        <td>{{row|attr(c)}}</td>
+                        <th>{{ c }}</th>
                     {% endfor %}
-                    <td><button class="btn btn-outline-success" onclick="location.href='{{url_for('edit', table=t, idx=row.index)}}'"><i class="fas fa-edit"></i></button></td>
+                    <th>edit</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-     {{ pagination.links }}
- </div>
+                </thead>
+                <tbody>
+                {% for row in data %}
+                    <tr>
+                        <td><input type="checkbox" name="select" id="{{ row.index }}"></td>
+                        {% for c in columns %}
+                            <td>{{ row|attr(c) }}</td>
+                        {% endfor %}
+                        <td>
+                            <button class="btn btn-outline-success"
+                                    onclick="location.href='{{ url_for('edit', table=t, idx=row.index) }}'"><i
+                                    class="fas fa-edit"></i></button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {{ pagination.links }}
+        </div>
 {% endblock %}

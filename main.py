@@ -1,22 +1,17 @@
 from flask import Flask, render_template, redirect, url_for, flash, request, jsonify, make_response, abort
-from flask_paginate import Pagination
 from flask_apscheduler import APScheduler
+from flask_paginate import Pagination
 from sqlalchemy import and_, or_
+
 from database import session, get_model_by_tablename, get_columns
-import sentry_sdk
-from sentry_sdk.integrations.flask import FlaskIntegration
-from models import History
-from updater import Updater, links
 from logger import logger
-from settings import SECRET_KEY, SENTRY_DSN, Config
+from models import History
+from settings import SECRET_KEY, Config
+from updater import Updater, links
 
 app = Flask('kfm_grabber', template_folder='templates', static_url_path='/static')
 scheduler = APScheduler()
-# sentry
-sentry_sdk.init(
-    dsn=SENTRY_DSN,
-    integrations=[FlaskIntegration()]
-)
+
 updater = Updater(links)
 app.secret_key = SECRET_KEY
 app.config.from_object(Config())
@@ -27,6 +22,7 @@ records_num = 30
 def update():
     updater.run()
     print('background database updating done')
+
 
 # Routes
 
@@ -61,7 +57,7 @@ def page(table, p):
         if p == 1:
             data = session.query(model).order_by(model.index).limit(records_num)
         elif 1 < p < pagination.total_pages + 1:
-            data = session.query(model).order_by(model.index).limit(records_num).offset(records_num * (p-1))
+            data = session.query(model).order_by(model.index).limit(records_num).offset(records_num * (p - 1))
         else:
             return redirect(url_for('page', table=table, p=1))
         context = {
@@ -197,7 +193,7 @@ def search():
         results = session.query(model).filter(or_(expression)).filter(model.status == status)
 
     total_count = results.count()
-    pagination = Pagination(page=p, total=total_count, per_page=records_num, bs_version='4', href=url+'&page={}',
+    pagination = Pagination(page=p, total=total_count, per_page=records_num, bs_version='4', href=url + '&page={}',
                             alignment='center')
     if p == 1:
         data = results.limit(records_num)
@@ -237,6 +233,7 @@ def page404(e):
 
 @app.errorhandler(500)  # 500 internal server error
 def page500(e):
+    print(e)
     return render_template('500.html'), 500
 
 

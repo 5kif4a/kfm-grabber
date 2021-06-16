@@ -1,7 +1,6 @@
 import logging
 import sys
 
-
 logger = logging.getLogger('KFM-grabber')
 logger.setLevel(logging.DEBUG)
 # create file handler which logs even debug messages
