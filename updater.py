@@ -9,15 +9,15 @@ from database import con
 from logger import logger
 
 # ссылки на XML файлы
-links = (
-    'https://kfm.gov.kz/blacklist/export/active/xml',
-    'https://kfm.gov.kz/blacklist/export/excluded/xml'
-)
+links = [
+    'https://afmrk.gov.kz/blacklist/export/active/xml',
+    'https://afmrk.gov.kz/blacklist/export/excluded/xml'
+]
 
 
 class Updater:
-    def __init__(self, links):
-        self.links = links  # ссылки на скачивание файлов
+    def __init__(self, _links):
+        self.links = _links  # ссылки на скачивание файлов
         self.person_cols = ('num', 'lname', 'fname', 'mname', 'birthdate', 'iin', 'note', 'correction')
         self.org_cols = ('num', 'org_name', 'org_name_en', 'note')
         self.tags = ('person', 'org')  # тэги для парсинга XML
@@ -32,7 +32,9 @@ class Updater:
 
     @staticmethod
     def download(link):  # скачивает файл по ссылке
-        raw_data = r.get(link)  # скачиваем по ссылке данные
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                                 'Chrome/91.0.4472.114 Safari/537.36 '}
+        raw_data = r.get(link, headers=headers)  # скачиваем по ссылке данные
         data = StringIO()  # храним данные в ОЗУ
         data.write(raw_data.content.decode())  # записываем скачанную декодированную строку
         return ET.fromstring(data.getvalue())  # возвращаем XML элемент
