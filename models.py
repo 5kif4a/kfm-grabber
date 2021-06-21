@@ -1,6 +1,7 @@
-from sqlalchemy import Column, BIGINT, Text, DateTime
+import datetime as dt
+
+from sqlalchemy import Column, BIGINT, Text
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.sql import func
 
 Base = declarative_base()  # Декларативный стиль
 
@@ -45,7 +46,7 @@ class History(Base):
     table = Column(Text)
     obj_id = Column(BIGINT)
     note = Column(Text)
-    date = Column(DateTime, default=func.now())
+    date = Column(Text, default=dt.datetime.now().strftime('%d.%m.%Y %H:%M'))
 
     def __repr__(self):
         return '<History({},{},{},{},{))>'.format(self.index, self.table, self.obj_id,
